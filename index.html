@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+          function GetTagsList() {
+      
+      jQuery.ajax({
+          type: "GET",
+          url: "./dist/php/test.php",
+          dataType: "json",
+          async: true,
+          success: function(Data){
+            console.log(Data);
+          },
+          error: function() {
+              console.warn("Erreur");
+          },
+      });
+      
+      }
+      GetTagsList();
+        });
+        
+        </script>
+      
+</head>
+<body>
+    
+</body>
+
+</html>
