@@ -80,7 +80,7 @@
               </div>
             </div>
             <div class="search-button">
-              <button>Rechercher</button>
+                <button>Rechercher</button> <button data-toggle="modal" data-target="#AddModal">Ajouter une offre</button>
             </div>
           </div>
         </div>
@@ -91,32 +91,9 @@
   <!-- Members -->
   <section class="pro-mem">
     <div class="container pb30">
-        <div class="search-button">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#AddModal">Ajouter une offre</button>
-          </div>
 
       <h3>Nouvelles offres</h3>
       <div class="row" id="cands">
-        <div class="col-sm-3">
-          <div class="uou-block-6a"> <img src="images/member-1.png" alt="">
-            <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
-            <p><i class="fa fa-map-marker"></i> New York, USA</p>
-          </div>
-          <!-- end .uou-block-6a --> 
-        </div>
-        <div class="col-sm-3">
-          <div class="uou-block-6a"> <img src="images/member-2.png" alt="">
-            <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
-            <p><i class="fa fa-map-marker"></i> New York, USA</p>
-          </div>
-          <!-- end .uou-block-6a --> 
-        </div>
-        <div class="col-sm-3">
-          <div class="uou-block-6a"> <img src="images/member-2.png" alt="">
-            <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
-            <p><i class="fa fa-map-marker"></i> New York, USA</p>
-          </div>
-          <!-- end .uou-block-6a --> 
     
       </div>
     </div>
@@ -203,9 +180,23 @@
         var id_user = sessionStorage.getItem("id_user");
   
         var str = "";
-        str = str + '<div class="col-sm-3"><div class="uou-block-6a"> <img src="images/member-3.png" alt=""><h6>' + nomEntr + '<span>' + nomContrat +  ' | ' + nomPoste + '</span></h6><span>A Pourvoir le : ' + datePoste + '</span><p><i class="fa fa-map-marker"></i>Lyon, France</p></div></div>';
+        str = str + '<div class="col-sm-3"><div class="uou-block-6a"><h6 style="font-size:30px;color:#0099ff;">' + nomEntr + '<br><br><span>' + nomContrat +  ' | ' + nomPoste + '</span></h6><span>A Pourvoir le : ' + datePoste + '</span><p><i class="fa fa-map-marker"></i>Lyon, France</p></div></div>';
         $('#cands').append(str);
-  
+
+
+        var url_ = "../dist/php/insert_offre.php?type=" + nomContrat + "&id_user=" + id_user + "&name=" + nomEntr + "&date_deb=" + datePoste + "&poste=" + nomPoste;
+    
+        jQuery.ajax({
+        url: url_,
+        dataType: "json",
+        success: function(Data){
+          console.log(Data);
+        },
+        error: function() {
+            console.warn("Erreur");
+        },
+    });
+
       });
     });
   
@@ -213,22 +204,24 @@
             <script>
                 $(document).ready(function(){
                   function GetTagsList2() {
-          var url_ = "../dist/php/select_offre.php;
+          var url_ = "../dist/php/select_offre.php";
     
     jQuery.ajax({
         url: url_,
         dataType: "json",
         success: function(Data){
           console.log(Data);
-          for(i = 0; i < Data.comment.length; i ++){
-            var firstname = Data.comment[i].firstname;
-            var name = Data.comment[i].name;
-            var date_ = Data.comment[i].date;
-            var comm = Data.comment[i].description;
-            var str = '<li><article class="comment"><img src="img/p-post-1.png" alt=""><div><header><a href="#" class="user">' + firstname + ' ' + name + ' - </a><span class="time-ago">' + date_ + '</span><a href="#" class="reply">Répondre</a></header><p>' + comm + '</p></div></article></li>';
-            console.log(str);
-           $('#coms').prepend(str);
-    
+          for(i = 0; i < Data.offre.length; i ++){
+            var nom = Data.offre[i].nom;
+            var poste = Data.offre[i].poste;
+            var type = Data.offre[i].type;
+            var date_ = Data.offre[i].date_deb;
+            var id_entr = Data.offre[i].id_user;
+
+            var str = "";
+            str = str + '<div class="col-sm-3"><div class="uou-block-6a"><H6 style="font-size:30px;color:#0099ff;">' + nom + '<br><br><span>' + type +  ' | ' + poste + '</span></h6><span>A Pourvoir le : ' + date_ + '</span><p><i class="fa fa-map-marker"></i>Lyon, France</p></div></div>';
+            $('#cands').append(str);
+
           }
         },
         error: function() {

@@ -80,7 +80,7 @@
               </div>
             </div>
             <div class="search-button">
-              <button>Rechercher</button>
+              <button>Rechercher</button> <button data-toggle="modal" data-target="#AddModal">Ajouter ma candidature</button>
             </div>
           </div>
         </div>
@@ -91,33 +91,9 @@
   <!-- Members -->
   <section class="pro-mem">
     <div class="container pb30">
-        <div class="search-button">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#AddModal">Ajouter ma candidature</button>
-          </div>
 
       <h3>Profils récents</h3>
       <div class="row" id="cands">
-        <div class="col-sm-3">
-          <div class="uou-block-6a"> <img src="images/member-1.png" alt="">
-            <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
-            <p><i class="fa fa-map-marker"></i> New York, USA</p>
-          </div>
-          <!-- end .uou-block-6a --> 
-        </div>
-        <div class="col-sm-3">
-          <div class="uou-block-6a"> <img src="images/member-2.png" alt="">
-            <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
-            <p><i class="fa fa-map-marker"></i> New York, USA</p>
-          </div>
-          <!-- end .uou-block-6a --> 
-        </div>
-        <div class="col-sm-3">
-          <div class="uou-block-6a"> <img src="images/member-2.png" alt="">
-            <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
-            <p><i class="fa fa-map-marker"></i> New York, USA</p>
-          </div>
-          <!-- end .uou-block-6a --> 
-        </div>
         
     </div>
   </section>
@@ -203,22 +179,68 @@
 </div>
 <!-- ====================MODAL================================= -->
 <script>
-  $(document).ready(function(){
-    $('#btnAddCand').click(function(){
-      var nomContrat = $('#nameContrat').val();
-      var nomPoste = $('#namePoste').val();
-      var Nom = sessionStorage.getItem("Nom");
-      var Prenom = sessionStorage.getItem("Prenom");
-      var id_user = sessionStorage.getItem("id_user");
+    $(document).ready(function(){
+      $('#btnAddCand').click(function(){
+        var nomContrat = $('#nameContrat').val();
+        var nomPoste = $('#namePoste').val();
+        var id_user = sessionStorage.getItem("id_user");
+        var prenom = sessionStorage.getItem("Prenom");
+        var nom = sessionStorage.getItem("Nom");
+  
+        var str = "";
+        str = str + '<div class="col-sm-3"><div class="uou-block-6a"> <img src="images/member-1.png" alt=""><h6>' + prenom + ' ' + nom + '<span>' + nomContrat + ' | ' + nomPoste + '</span></h6><p><i class="fa fa-map-marker"></i> Lyon, France</p></div></div>';
+        $('#cands').append(str);
 
-      var str = "";
-      str = str + '<div class="col-sm-3"><div class="uou-block-6a"> <img src="images/member-3.png" alt=""><h6>' + Prenom +  ' ' + Nom + '<span>' + nomContrat +  ' | ' + nomPoste + '</span></h6><p><i class="fa fa-map-marker"></i>Lyon, France</p></div></div>';
-      $('#cands').append(str);
 
+        var url_ = "../dist/php/insert_demande.php?id_user=" + id_user + "&type=" + nomContrat + "&nom_poste=" + nomPoste;
+        console.log(url_);
+        jQuery.ajax({
+        url: url_,
+        dataType: "json",
+        success: function(Data){
+          console.log(Data);
+        },
+        error: function() {
+            console.warn("Erreur");
+        },
     });
-  });
 
-</script>
+      });
+    });
+  
+  </script>
+            <script>
+                $(document).ready(function(){
+                  function GetTagsList2() {
+          var url_ = "../dist/php/select_demande.php";
+    
+    jQuery.ajax({
+        url: url_,
+        dataType: "json",
+        success: function(Data){
+          console.log(Data);
+          for(i = 0; i < Data.demandes.length; i ++){
+            var nom = Data.demandes[i].name;
+            var prenom = Data.demandes[i].firstname;
+            var type = Data.demandes[i].type;
+            var nom_poste = Data.demandes[i].nom_poste;
+            var id_user = Data.demandes[i].id_user;
+
+            var str = "";
+            str = str + '<div class="col-sm-3"><div class="uou-block-6a"> <img src="images/member-1.png" alt=""><h6>' + prenom + ' ' + nom + '<span>' + type + ' | ' + nom_poste + '</span></h6><p><i class="fa fa-map-marker"></i> Lyon, France</p></div></div>';
+            $('#cands').append(str);
+
+          }
+        },
+        error: function() {
+            console.warn("Erreur");
+        },
+    });
+    
+    }
+    GetTagsList2();
+                });
+              </script>
 <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

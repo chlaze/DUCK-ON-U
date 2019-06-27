@@ -3,7 +3,7 @@ header('Content-type: application/json');
 require("connexion.php");
 
     
-    $sql = 'SELECT * FROM offre WHERE statut=1 ORDER BY date DESC';
+    $sql = 'SELECT * FROM offre WHERE statut=1';
     $stmt = $bdd->prepare($sql);
     $stmt->execute();
     $offre = $stmt->fetchAll(PDO::FETCH_ASSOC);
