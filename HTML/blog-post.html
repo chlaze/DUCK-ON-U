@@ -156,31 +156,45 @@ GetTagsList();
             </div>
 
 
-            <a class="btn btn-primary " href="#">Revenir aux actualités</a>
+            <!-- <a class="btn btn-primary " href="#">Revenir aux actualités</a> -->
 
           </article> <!-- end .uou-block-7f -->
+          <script>
+            $(document).ready(function(){
+              function GetTagsList2() {
+      var id_art = getUrlVars();
+      var url_ = "../dist/php/post_comment.php?id_post=" + id_art.id;
 
+jQuery.ajax({
+    url: url_,
+    dataType: "json",
+    success: function(Data){
+      console.log(Data);
+      for(i = 0; i < Data.comment.length; i ++){
+        var firstname = Data.comment[i].firstname;
+        var name = Data.comment[i].name;
+        var date_ = Data.comment[i].date;
+        var comm = Data.comment[i].description;
+        var str = '<li><article class="comment"><img src="img/p-post-1.png" alt=""><div><header><a href="#" class="user">' + firstname + ' ' + name + ' - </a><span class="time-ago">' + date_ + '</span><a href="#" class="reply">Répondre</a></header><p>' + comm + '</p></div></article></li>';
+        console.log(str);
+       $('#coms').prepend(str);
+
+      }
+    },
+    error: function() {
+        console.warn("Erreur");
+    },
+});
+
+}
+GetTagsList2();
+            });
+          </script>
 
           <div class="uou-post-comment">
             <aside class="uou-block-14a">
-              <h5 class="sidebar-title">Comments(<span>2</span>)</h5>
-              <ul>
-                <li>
-                  <article class="comment">
-                    <img src="img/p-post-1.png" alt="">
-
-                    <div>
-                      <header>
-                        <a href="#" class="user">Jessica Walsh -</a>
-
-                        <span class="time-ago">May 13, 2015(11.25)</span>
-                        <a href="#" class="reply">Reply</a>
-                      </header>
-
-                      <p>Veniam minus obcaecati, quos facere et quibusdam debitis iure voluptate libero voluptas dolorem praesentium rerum adipisci ad fuga, odio molestiae. Soluta quos vel pariatur nemo fugit repellat. nemo fugit repellat</p>
-                    </div>
-                  </article>
-                </li>
+              <h5 class="sidebar-title">Commentaires</h5>
+              <ul id="coms">
 
 
                 <li>
@@ -189,45 +203,66 @@ GetTagsList();
 
                     <div>
                       <header>
-                        <a href="#" class="user">Jessica Walsh -</a>
+                        <a href="#" class="user">Nicolas De Libero -</a>
 
-                        <span class="time-ago">May 13, 2015(11.25)</span>
-                        <a href="#" class="reply">Reply</a>
+                        <span class="time-ago">27-06-2019</span>
+                        <a href="#" class="reply">Répondre</a>
                       </header>
 
-                      <p>Veniam minus obcaecati, quos facere et quibusdam debitis iure voluptate libero voluptas dolorem praesentium rerum adipisci ad fuga, odio molestiae. Soluta quos vel pariatur nemo fugit repellat. nemo fugit repellat</p>
+                      <p>Super article</p>
                     </div>
                   </article>
                 </li>
 
               </ul>
             </aside> <!-- end .uou-block-14a -->
+<script>
+  $(document).ready(function(){
+    $('#btnaddcom').click(function(){
+  console.log("ok");
 
-            <h4>Join Conversation</h4>
+  var Date_ = new Date();
+  var day = Date_.getDate();
+  var month = Date_.getMonth();
+  var year = Date_.getYear();
+  var Date_ = day + "/" + month + "/" + year;
+  var Nom = sessionStorage.getItem("Nom");
+  var Prenom = sessionStorage.getItem("Prenom");
+  var com = $('#textcom').val();
+  if(com.length == 0){
+    alert("Veuillez saisir un commentaire.");
+  }else{
+    var str = '<li><article class="comment"><img src="img/p-post-1.png" alt=""><div><header><a href="#" class="user">' + Prenom + ' ' + Nom + ' - </a><span class="time-ago">' + Date_ + '</span><a href="#" class="reply">Répondre</a></header><p>' + com + '</p></div></article></li>';
+    console.log(str);
+    $('#coms').prepend(str);
+
+  
+  }
+  
+  return false;
+
+
+
+});
+
+  });
+
+</script>
+            <h4>Ajouter un commentaire</h4>
 
             <div class="uou-post-comment-form">
-              <form role= "form">
+              <!-- <form> -->
                 <div class="row">
-                  <div class="col-sm-4">
-                    <input type="text" placeholder="Name">
-                  </div>
-                  <div class="col-sm-4">
-                    <input type="email" placeholder="E-mail">
-                  </div>
-                  <div class="col-sm-4">
-                    <input type="text" placeholder="Website">
+                  <div class="col-sm-12">
+                    <textarea placeholder="Votre commentaire" id="textcom"></textarea>
                   </div>
 
                   <div class="col-sm-12">
-                    <textarea placeholder="Your comment"></textarea>
-                  </div>
-
-                  <div class="col-sm-12">
-                    <button class="btn btn-primary">Add Comment</button>
+                    <button class="btn btn-primary" id="btnaddcom">Ajouter</button>
                   </div>
 
                 </div> <!-- end row -->
-              </form>
+              <!-- </form> -->
             </div>
 
           </div>
@@ -249,26 +284,21 @@ GetTagsList();
               </form>
             </div> <!-- end search-widget -->
 
-            <h5 class="sidebar-title">Categories</h5>
+            <h5 class="sidebar-title">Catégories</h5>
 
             <div class="list-widget">
               <ul>
-                <li><a href="#">Creative</a></li>
-                <li><a href="#">Design</a></li>
-                <li><a href="#">Development</a></li>
+                <li><a href="#">L'école</a></li>
+                <li><a href="#">BDE</a></li>
+                <li><a href="#">Culture</a></li>
                 <li><a href="#">Mulitmedia</a></li>
-                <li><a href="#">Offtopic</a></li>
-
+                <li><a href="#">Média</a></li>
               </ul>
             </div>
 
 
-            <h5 class="sidebar-title">About Us</h5>
 
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi.</p>
-
-
-            <h5 class="sidebar-title">Connect With Us</h5>
+            <h5 class="sidebar-title">Suivez-nous !</h5>
 
             <div class="social-widget">
               <div class="uou-block-4b">
@@ -284,64 +314,7 @@ GetTagsList();
               </div> <!-- end .uou-block-4b -->
             </div> <!-- end social widget -->
 
-            <h5 class="sidebar-title">Popular Posts</h5>
 
-            <div class="latest-post-widget">
-              <div class="post-single">
-                <img src="img/p-post-1.png" alt="">
-                <p class="meta">January 12, 2015</p>
-                <p class="meta">Design</p>
-                <h6 class="post-title"><a href="#">Pariatur Vellit Corrupti Goes Into 2 Lines</a></h6>
-
-              </div>
-
-              <div class="post-single">
-                <img src="img/p-post-2.png" alt="">
-                <p class="meta">January 12, 2015</p>
-                <p class="meta">Design</p>
-                <h6 class="post-title"><a href="#">Pariatur Vellit Corrupti Goes Into 2 Lines</a></h6>
-
-              </div>
-
-              <div class="post-single">
-                <img src="img/p-post-3.png" alt="">
-                <p class="meta">January 12, 2015</p>
-                <p class="meta">Design</p>
-                <h6 class="post-title"><a href="#">Pariatur Vellit Corrupti Goes Into 2 Lines</a></h6>
-
-              </div>
-            </div> <!-- end latest-post-widget -->
-
-
-            <h5 class="sidebar-title">Tag Cloud</h5>
-
-            <div class="widget-tag">
-              <div class="tag-cloud">
-                <a class="btn btn-primary" href="#">User Experience</a>
-                <a class="btn btn-primary" href="#">HTML 5</a>
-                <a class="btn btn-primary" href="#">Css 3</a>
-                <a class="btn btn-primary" href="#">web design</a>
-                <a class="btn btn-primary" href="#">social media</a>
-                <a class="btn btn-primary" href="#">web development</a>
-                <a class="btn btn-primary" href="#">print design</a>
-                <a class="btn btn-primary" href="#">e-commerce</a>
-                <a class="btn btn-primary" href="#">java script</a>
-              </div>
-
-            </div>
-
-            <h5 class="sidebar-title">Archive</h5>
-
-            <div class="list-widget">
-              <ul>
-                <li><a href="#">May 2015</a></li>
-                <li><a href="#">April 2015</a></li>
-                <li><a href="#">July 2015</a></li>
-                <li><a href="#">Frbruary 2015</a></li>
-                <li><a href="#">January 2015</a></li>
-
-              </ul>
-            </div>
 
 
           </div> <!-- end uou-sidebar -->
