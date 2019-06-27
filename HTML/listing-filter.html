@@ -16,48 +16,12 @@
 <link rel="stylesheet" href="css/owl.carousel.css">
 <link rel="stylesheet" href="css/main-style.css">
 <link rel="stylesheet" href="css/style.css">
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
 </head>
 <body>
 <div id="main-wrapper"> 
   
-  <!-- Top Toolbar -->
-  <div class="toolbar">
-    <div class="uou-block-1a blog">
-      <div class="container">
-        <div class="search"> <a href="#" class="toggle fa fa-search"></a>
-          <form action="#">
-            <input type="text" class="search-input" placeholder="Search ...">
-            <input type="submit" value="">
-          </form>
-        </div>
-        <ul class="social">
-          <li><a href="#" class="fa fa-facebook"></a></li>
-          <li><a href="#" class="fa fa-twitter"></a></li>
-          <li><a href="#" class="fa fa-google-plus"></a></li>
-        </ul>
-        <ul class="authentication">
-          <li><a href="#">Login</a></li>
-          <li><a href="#">Register</a></li>
-        </ul>
-        <div class="language"> <a href="#" class="toggle"><img src="images/flags/32/US.png" alt=""> ENG</a>
-          <ul>
-            <li><a href="#"><img src="images/flags/32/PT.png" alt=""> PT</a></li>
-            <li><a href="#"><img src="images/flags/32/FR.png" alt=""> FR</a></li>
-            <li><a href="#"><img src="images/flags/32/ES.png" alt=""> ES</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <!-- end .uou-block-1a --> 
-  </div>
-  <!-- end toolbar -->
   
   <div class="box-shadow-for-ui">
     <div class="uou-block-2b">
@@ -91,10 +55,11 @@
   <div class="profile-bnr sub-bnr user-profile-bnr">
     <div class="position-center-center">
       <div class="container">
-        <h2>Search Professionals</h2>
+        <h2>Candidatures spontannées</h2>
       </div>
     </div>
   </div>
+
   
   <!-- search -->
   <div class="search-pro">
@@ -105,17 +70,17 @@
             <div class="map-toggleButton"> <i class="fa fa-bars"></i> </div>
             <div class="map-search-fields">
               <div class="field">
-                <input type="text" placeholder="Keyword">
+                <input type="text" placeholder="Mots clés (Chef de projet ...)">
               </div>
               <div class="field">
-                <input type="text" placeholder="Location">
+                <input type="text" placeholder="Localisation">
               </div>
               <div class="field custom-select-box">
-                <input type="text" placeholder="Profession">
+                <input type="text" placeholder="Domaine">
               </div>
             </div>
             <div class="search-button">
-              <button>Search Professionals</button>
+              <button>Rechercher</button>
             </div>
           </div>
         </div>
@@ -126,8 +91,12 @@
   <!-- Members -->
   <section class="pro-mem">
     <div class="container pb30">
-      <h3>Professionals</h3>
-      <div class="row">
+        <div class="search-button">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#AddModal">Ajouter ma candidature</button>
+          </div>
+
+      <h3>Profils récents</h3>
+      <div class="row" id="cands">
         <div class="col-sm-3">
           <div class="uou-block-6a"> <img src="images/member-1.png" alt="">
             <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
@@ -149,42 +118,7 @@
           </div>
           <!-- end .uou-block-6a --> 
         </div>
-        <div class="col-sm-3">
-          <div class="uou-block-6a"> <img src="images/member-3.png" alt="">
-            <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
-            <p><i class="fa fa-map-marker"></i> New York, USA</p>
-          </div>
-          <!-- end .uou-block-6a --> 
-        </div>
-        <div class="col-sm-3">
-          <div class="uou-block-6a"> <img src="images/member-1.png" alt="">
-            <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
-            <p><i class="fa fa-map-marker"></i> New York, USA</p>
-          </div>
-          <!-- end .uou-block-6a --> 
-        </div>
-        <div class="col-sm-3">
-          <div class="uou-block-6a"> <img src="images/member-1.png" alt="">
-            <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
-            <p><i class="fa fa-map-marker"></i> New York, USA</p>
-          </div>
-          <!-- end .uou-block-6a --> 
-        </div>
-        <div class="col-sm-3">
-          <div class="uou-block-6a"> <img src="images/member-2.png" alt="">
-            <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
-            <p><i class="fa fa-map-marker"></i> New York, USA</p>
-          </div>
-          <!-- end .uou-block-6a --> 
-        </div>
-        <div class="col-sm-3">
-          <div class="uou-block-6a"> <img src="images/member-2.png" alt="">
-            <h6>Jessica Walsh <span>Founder &amp; Web Designer</span></h6>
-            <p><i class="fa fa-map-marker"></i> New York, USA</p>
-          </div>
-          <!-- end .uou-block-6a --> 
-        </div>
-      </div>
+        
     </div>
   </section>
 </div>
@@ -267,7 +201,42 @@
   </nav>
   <hr>
 </div>
+<!-- ====================MODAL================================= -->
+<script>
+  $(document).ready(function(){
+    $('#btnAddCand').click(function(){
+      var nomContrat = $('#nameContrat').val();
+      var nomPoste = $('#namePoste').val();
+      var Nom = sessionStorage.getItem("Nom");
+      var Prenom = sessionStorage.getItem("Prenom");
+      var id_user = sessionStorage.getItem("id_user");
 
+      var str = "";
+      str = str + '<div class="col-sm-3"><div class="uou-block-6a"> <img src="images/member-3.png" alt=""><h6>' + Prenom +  ' ' + Nom + '<span>' + nomContrat +  ' | ' + nomPoste + '</span></h6><p><i class="fa fa-map-marker"></i>Lyon, France</p></div></div>';
+      $('#cands').append(str);
+
+    });
+  });
+
+</script>
+<div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="AddModalLabel">Ajouter ma candidature</h5>
+        </div>
+        <div class="modal-body">
+         <input type="text" id="nameContrat" class="form-control" placeholder="Type de contrat recherché (Alternance, CDI ...)" style="width:70%;color:grey;">
+         <input type="text" id="namePoste" class="form-control" placeholder="Type de poste recherché (Développeur Web ...)" style="width:70%;color:grey;">
+          <button id="btnAddCand" data-dismiss="modal" class="btn btn-primary">Ajouter</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- ===========================MODAL==================================== -->
 <!-- Scripts --> 
 <script src="https://maps.googleapis.com/maps/api/js"></script> 
 <script src="js/jquery-2.1.3.min.js"></script> 
