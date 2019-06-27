@@ -2821,7 +2821,7 @@ a {
 	text-decoration: none;
 }
 a:hover, a:focus {
-	color: #008b5f;
+	color: #71c5fd;
 }
 input, button, select, textarea {
 	font-family: inherit;
