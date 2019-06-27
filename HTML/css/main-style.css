@@ -536,7 +536,7 @@ td, th {
 	width: 83.33333333%;
 }
 .col-md-9 {
-	width: 75%;
+	width: 37%;
 }
 .col-md-8 {
 	width: 66.66666667%;
@@ -3005,6 +3005,12 @@ hr {
 	color: #fff;
 	border-radius: 3px;
 }
+.uou-paginatin li.active2 a {
+	background: #0e074e;
+	padding: 3px 10px;
+	color: #fff;
+	border-radius: 3px;
+}
 .uou-paginatin li a {
 	color: #999;
 	padding: 5px;
@@ -3428,6 +3434,10 @@ address {
 .btn-primary {
 	background-color: #0099ff;
 	border: 2px solid #0099ff;
+}
+.btn-primary2 {
+background-color: #0e074e;
+border: 2px solid #0e074e;
 }
 .btn-primary:hover, .btn-primary.hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active {
 	background-color: #008fef;
