@@ -19,7 +19,16 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
-var id = sessionStorage.getItem('id_user');
+  function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+  }
+// var id = sessionStorage.getItem('id_user');
+var id = getUrlVars();
+id = id.id;
 console.log(id);
 var url_ = "../dist/php/info_user.php?id_user=" + id;
 

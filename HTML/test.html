@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+</head>
+
+<body>
+    <div class="custom-file" style="width:20%;">
+        <input type="file" class="custom-file-input" id="file" name="file" lang="fr">
+        <label class="custom-file-label" for="customFileLang">Sélectionner</label>
+    </div>
+    <button id="btn">ENVOYER</button>
+    <span id="uploaded_image"></span>
+</body>
+
+</html>
+<script>
+    $(document).ready(function() {
+        $(document).on('change', '#file', function() {
+            var property = document.getElementById("file").files[0];
+            var image_name = property.name;
+            var image_extension = image_name.split(".").pop().toLowerCase();
+            if (jQuery.inArray(image_extension, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+                alert("Invalide Image");
+            }
+            var image_size = property.size;
+            if (image_size > 15000000) {
+                alert("Image Volumineuse");
+            } else {
+                var form_data = new FormData();
+                form_data.append("file", property);
+                $.ajax({
+                    url: "../dist/php/upload_images.php",
+                    method: "POST",
+                    data: form_data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $('#uploaded_image').html("Envoi en cours ....");
+                    },
+                    success: function(data) {
+                        $('#uploaded_image').html(data);
+                    }
+                })
+            }
+        });
+    });
+</script>

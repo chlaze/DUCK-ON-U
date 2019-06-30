@@ -1,79 +1,185 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>TIGER - Social Network HTML Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TIGER - Social Network HTML Template</title>
 
-<!-- Fonts Online -->
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <!-- Fonts Online -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
-<!-- Style Sheet -->
-<link rel="stylesheet" href="css/owl.carousel.css">
-<link rel="stylesheet" href="css/main-style.css">
-<link rel="stylesheet" href="css/style.css">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/main-style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-</head>
-<body>
-<div id="main-wrapper"> 
-
-
-  <script>
-  $(document).ready(function(){
-    function GetTagsList() {
-
-jQuery.ajax({
-    url: "../dist/php/test.php",
-    dataType: "json",
-    success: function(Data){
-      console.log(Data);
-      for(i = 0; i < Data.tab.length; i ++){
-        console.log(Data.tab[i].titre);
-        var title = Data.tab[i].titre;
-        var date = Data.tab[i].date_post;
-        var cat = Data.tab[i].cat;
-        var short_text = Data.tab[i].short_text;
-        var long_text = Data.tab[i].long_text;
-        var posted_by = Data.tab[i].posted_by;
-        var nb_com = Data.tab[i].nb_com;
-        var id = Data.tab[i].id;
-
-        var str = "";
-        str = str + '<article class="uou-block-7f"> <img src="img/blog-image-1.jpg" alt="" class="thumb"><div class="meta"> <span class="time-ago">' + date + '</span> <span class="category">Catégorie : ' + cat + '</span> ' + nb_com + ' Commentaires</div><h1><a href="blog-post.html?id=' + id + '">' + title + '</a></h1><p>' + short_text + '</p><a href="blog-post.html?id=' + id + '" class="btn btn-small btn-primary">Lire la suite</a></article>';
-        
-        
-        $('#Articles_List').prepend(str);
-      }
-    },
-    error: function() {
-        console.warn("Erreur");
-    },
-});
-
-}
-GetTagsList();
-  });
-  
-  </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 </head>
+
 <body>
-<div id="main-wrapper"> 
+    <div id="main-wrapper">
 
 
-  
-  <div class="box-shadow-for-ui">
-    <div class="uou-block-2b">
-      <div class="container"> <a href="#" class="logo"><img src="images/logo.png" alt=""></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
-        <nav class="nav">
-          <ul class="sf-menu">
-            <li><a href="blog.html"><i class="fa  fa-home"></i></a></li>
-            <li> <a href="listing-filter.html">Offre</a> </li>
-            <!---            <li> <a href="index.html">Pages</a>
+        <script>
+            $(document).ready(function() {
+                var d = new Date();
+                var day = d.getDate();
+                var month = d.getMonth() + 1;
+                var year = d.getFullYear();
+                var d = year + "-0" + month + "-" + day;
+
+                var Nom_hi = sessionStorage.getItem("Prenom");
+                $('#Nom_hi').append(Nom_hi);
+
+                $('#btnPost').click(function() {
+                    var texte = $('#textPost').val();
+                    var id_user = sessionStorage.getItem("id_user");
+                    var name = sessionStorage.getItem("Prenom") + " " + sessionStorage.getItem("Nom");
+
+                    var img = "";
+                    var property = document.getElementById("file").files[0];
+                    if (property != undefined) {
+
+                        var image_name = property.name;
+                        var image_extension = image_name.split(".").pop().toLowerCase();
+                        if (jQuery.inArray(image_extension, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+                            alert("Format d'image invalide");
+                        }
+                        var image_size = property.size;
+                        if (image_size > 15000000) {
+                            alert("Image trop Volumineuse");
+                        } else {
+                            var form_data = new FormData();
+                            form_data.append("file", property);
+                            $.ajax({
+                                url: "../dist/php/upload_images.php",
+                                method: "POST",
+                                data: form_data,
+                                contentType: false,
+                                cache: false,
+                                processData: false,
+                                beforeSend: function() {
+                                    // $('#uploaded_image').html("Envoi en cours ....");
+                                },
+                                success: function(data) {
+                                    var url_ = "../dist/php/insert_article.php?id_user=" + id_user + "&nom=" + name + "&texte=" + texte + "&img=" + data;
+                                    console.log(url_);
+                                    jQuery.ajax({
+                                        url: url_,
+                                        dataType: "json",
+                                        success: function(Data) {
+                                            console.log(Data);
+                                        },
+                                        complete: function() {
+                                            console.warn("OK");
+                                        },
+                                        error: function() {
+                                            console.warn('ERREUR');
+                                        }
+                                    });
+
+
+                                    img = "</br><img src='" + data + "' style='width:300px;'></br>";
+                                    var str = "";
+                                    str = str + '<div class="shadow p-3 mb-5 bg-white rounded"><div class="card-header"><a href="user-profile(layout-2).html?id=' + id_user + '"><b>' + name + '</b></a></div> <div class="card-body"> ' + texte + img + '<a href="#" style="color:grey;"> - Lire la suite</a><br> <br> <span style="color:grey;"> <i class="fa fa-thumbs-up"> </i> J\'aime <span>(0)</span> </span> <span style="color:grey;margin-left:20px;"> <i class="fa fa-thumbs-down"></i > Je n\'aime pas <span>(0)</span></span> <span style = "color:grey;margin-left:30px;" > <i class="fa fa-share-alt"> </i> Partager</span><span style="color:grey;margin-left:38%;"><i class="fa fa-calendar"></i> Le ' + d + '</span></div> </div>';
+                                    $('#Articles_List').prepend(str);
+
+                                }
+                            })
+                        }
+                    } else {
+
+                        var url_ = "../dist/php/insert_article.php?id_user=" + id_user + "&nom=" + name + "&texte=" + texte;
+                        console.log(url_);
+                        jQuery.ajax({
+                            url: url_,
+                            dataType: "json",
+                            success: function(Data) {
+                                console.log(Data);
+                            },
+                            complete: function() {
+                                console.warn("OK");
+                            },
+                        });
+
+
+                        var str = "";
+                        str = str + '<div class="shadow p-3 mb-5 bg-white rounded"><div class="card-header"><a href="user-profile(layout-2).html?id=' + id_user + '"><b>' + name + '</b></a></div> <div class="card-body"> ' + texte + img + '<a href="#" style="color:grey;"> - Lire la suite</a><br> <br> <span style="color:grey;"> <i class="fa fa-thumbs-up"> </i> J\'aime <span>(0)</span> </span> <span style="color:grey;margin-left:20px;"> <i class="fa fa-thumbs-down"></i > Je n\'aime pas <span>(0)</span></span> <span style = "color:grey;margin-left:30px;" > <i class="fa fa-share-alt"> </i> Partager</span><span style="color:grey;margin-left:38%;"><i class="fa fa-calendar"></i> Le ' + d + '</span></div> </div>';
+                        $('#Articles_List').prepend(str);
+                    }
+
+
+
+
+                });
+
+
+                function GetTagsList() {
+
+                    jQuery.ajax({
+                        url: "../dist/php/test.php",
+                        dataType: "json",
+                        success: function(Data) {
+                            console.log(Data);
+                            for (i = 0; i < Data.tab.length; i++) {
+                                console.log(Data.tab[i].titre);
+                                var title = Data.tab[i].titre;
+                                var date = Data.tab[i].date_post;
+                                var cat = Data.tab[i].cat;
+                                var short_text = Data.tab[i].short_text;
+                                var long_text = Data.tab[i].long_text;
+                                var posted_by = Data.tab[i].posted_by;
+                                var nb_com = Data.tab[i].nb_com;
+                                var id = Data.tab[i].id;
+                                var id_user = Data.tab[i].id_user;
+                                var url_img = Data.tab[i].url_img;
+                                var img = "";
+
+                                if (url_img == "") {
+
+                                } else {
+                                    img = '</br><img src="' + url_img + '" style="width:300px;"></br>';
+                                }
+
+                                var str = "";
+                                // str = str + '<article class="uou-block-7f"> <img src="img/blog-image-1.jpg" alt="" class="thumb"><div class="meta"> <span class="time-ago">' + date + '</span> <span class="category">Catégorie : ' + cat + '</span> ' + nb_com + ' Commentaires</div><h1><a href="blog-post.html?id=' + id + '">' + title + '</a></h1><p>' + short_text + '</p><a href="blog-post.html?id=' + id + '" class="btn btn-small btn-primary">Lire la suite</a></article>';
+
+                                str = str + '<div class="shadow p-3 mb-5 bg-white rounded"><div class="card-header"><a href="user-profile(layout-2).html?id=' + id_user + '"><b>' + posted_by + '</b></a></div> <div class="card-body"> ' + short_text + img + '<a href="blog-post.html?id=' + id + '" style="color:grey;"> - Lire la suite</a><br> <br> <span style="color:grey;"> <i class="fa fa-thumbs-up"> </i> J\'aime <span>(0)</span> </span> <span style="color:grey;margin-left:20px;"> <i class="fa fa-thumbs-down"></i > Je n\'aime pas <span>(0)</span></span> <span style = "color:grey;margin-left:30px;" > <i class="fa fa-share-alt"> </i> Partager</span><span style="color:grey;margin-left:38%;"><i class="fa fa-calendar"></i> Le ' + date + '</span></div> </div>';
+
+                                $('#Articles_List').prepend(str);
+                            }
+                        },
+                        error: function() {
+                            console.warn("Erreur");
+                        },
+                    });
+
+                }
+                GetTagsList();
+            });
+        </script>
+
+        </head>
+
+        <body style="font-size:15px;">
+            <div id="main-wrapper">
+
+
+
+                <div class="box-shadow-for-ui">
+                    <div class="uou-block-2b">
+                        <div class="container">
+                            <a href="#" class="logo"><img src="images/logo.png" alt=""></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
+                            <nav class="nav">
+                                <ul class="sf-menu">
+                                    <li><a href="blog.html"><i class="fa  fa-home"></i></a></li>
+                                    <li> <a href="listing-filter.html">Offre</a> </li>
+                                    <!---            <li> <a href="index.html">Pages</a>
                         <ul>
                        <li><a href="profile_company.html">Profile Company</a></li>
                         <li><a href="profile_company-no-tabs.html">Entreprise</a></li>
@@ -84,194 +190,190 @@ GetTagsList();
                           <li><a href="blog-post.html">Blog Post</a></li>           
                         </ul>
                       </li>
-                          -->  
-                      <li> <a href="user-profile(layout-1).html">Profil</a></li>
-                      <li class="active"><a href="blog.html">Actualités</a></li>
-                      <li><a href="chat.html"><i class="fa fa-comments"></i></a></li>
-                    </ul>
-        </nav>
-      </div>
-    </div>
-    <!-- end .uou-block-2b --> 
-  </div>
-  
-  <!-- SUB Banner -->
-  <div class="profile-bnr sub-bnr user-profile-bnr">
-    <div class="position-center-center">
-      <div class="container">
-        <h2>Dernières actualités</h2>
-      </div>
-    </div>
-  </div>
-  <div class="blog-content pt60">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-9" id="Articles_List">
-
-          
-          <article class="uou-block-7f"> <!--<img src="img/blog-image-1.jpg" alt="" class="thumb"> -->
-            <div class="meta"> <span class="time-ago">Il y a 2 jours</span> <span class="category">Posté par : <a href="#">Julie</a></span> <a href="#" class="comments">12 Commentaires</a> </div>
-            <h1><a href="#">Changements à Sciences U</a></h1>
-            <p>Nouveau BDE en création, ouverture des candicatures : Besoin de personne investi et ouverte d'esprit...</p>
-            <a href="#" class="btn btn-small btn-primary">En savoir plus</a> </article>
-          <!-- end .uou-block-7f -->
-        </div>
-        <div class="col-md-9" id="Articles_List" id="coloroffre">
-          
-            <article class="uou-block-7f"> <!--<img src="img/blog-image-1.jpg" alt="" class="thumb"> -->
-              <div class="meta"> <span class="time-ago">Il y a 1h</span> <span class="category">Posté par : <a href="#">SFR</a></span> </div>
-              <h1><a href="#">Développeur/se Angular</a></h1>
-              <p>Développeur symfony / angular ou similaire:. C'est pour ces raisons que nous souhaitons renforcer notre équipe avec la venue de 2 développeurs ayant une...</p>
-              <a href="#" class="btn btn-small btn-primary2">En savoir plus</a> </article>
-            <!-- end .uou-block-7f -->
-          </div>
-        <div class="col-md-3">
-            <div class="uou-sidebar">
-              <div class="search-widget">
-                <form class="search-form-widget" action="#">
-                  <input type="text" class="search-input" placeholder="Rechercher ...">
-                  <input type="submit" value="">
-                </form>
-              </div>
-              <!-- end search-widget -->
-              
-              <h5 class="sidebar-title">Categories</h5>
-              <div class="list-widget">
-                <ul>
-                  <li><a href="#">L'école</a></li>
-                  <li><a href="#">BDE</a></li>
-                  <li><a href="#">Culture</a></li>
-                  <li><a href="#">Mulitmedia</a></li>
-                  <li><a href="#">Média</a></li>
-                </ul>
-              </div>
-              <!-- end social widget -->       
-            </div>
-            <!-- end uou-sidebar --> 
-          </div>
-        <div class="col-md-9" id="Articles_List">
-
-            <article class="uou-block-7f"> <!--<img src="img/blog-image-1.jpg" alt="" class="thumb"> -->
-              <div class="meta"> <span class="time-ago">Il y a 2 jours</span> <span class="category">Posté par : <a href="#">Marie</a></span> <a href="#" class="comments">12 Commentaires</a> </div>
-              <h1><a href="#">Changements à Sciences U</a></h1>
-              <p>Nouveau BDE en création, ouverture des candicatures : Besoin de personne investi et ouverte d'esprit...</p>
-              <a href="#" class="btn btn-small btn-primary">En savoir plus</a> </article>
-            <!-- end .uou-block-7f -->
-          </div>
-        <div class="col-md-9" id="Articles_List" class="coloroffre">
-          
-            <article class="uou-block-7f"> <!--<img src="img/blog-image-1.jpg" alt="" class="thumb"> -->
-              <div class="meta"> <span class="time-ago">Il y a 1h</span> <span class="category">Posté par : <a href="#">ORANGE</a></span></div>
-              <h1><a href="#">Développeur/se Angular</a></h1>
-              <p>Développeur symfony / angular ou similaire:. C'est pour ces raisons que nous souhaitons renforcer notre équipe avec la venue de 2 développeurs ayant une...</p>
-              <a href="#" class="btn btn-small btn-primary2">En savoir plus</a> </article>
-            <!-- end .uou-block-7f -->
-          </div>
-
-            <h5 class="sidebar-title">Suivez-nous !</h5>
-              <div class="social-widget">
-                <div class="uou-block-4b">
-                  <ul class="social-icons">
-                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                    <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                  </ul>
+                          -->
+                                    <li> <a href="user-profile(layout-1).html">Profil</a></li>
+                                    <li class="active"><a href="blog.html">Actualités</a></li>
+                                    <li><a href="chat.html"><i class="fa fa-comments"></i></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- end .uou-block-2b -->
                 </div>
-                <!-- end .uou-block-4b --> 
-              </div>
-      
-      </div>
-      <!-- end row --> 
-      
-    </div>
-    <!-- edn cotainer --> 
-    
-  </div>
-</div>
 
-<!-- Footer -->
-<div class="uou-block-4e">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4 col-sm-6"> <a href="#" class="logo"><img src="images/logo.png" alt=""></a>
-        <ul class="contact-info has-bg-image contain" data-bg-image="images/footer-map-bg.png">
-          <li> <i class="fa fa-map-marker"></i>
-            <address>
+                <!-- SUB Banner -->
+                <div class="profile-bnr sub-bnr user-profile-bnr">
+                    <div class="position-center-center">
+                        <div class="container">
+                            <h2>Dernières actualités</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog-content pt60">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <!-- <div class="col-md-9"> -->
+                                <div class="shadow p-3 mb-5 bg-white rounded">
+                                    <H2 style="color:grey;">Bonjour <span id="Nom_hi"></span> ! Dites nous tout ...</H2><br>
+                                    <textarea id="textPost" cols="30" rows="3" class="form-control" style="font-size:15px;"></textarea><br>
+                                    <table>
+                                        <tr>
+                                            <td> <input type="file" id="file" style="">
+                                            </td>
+                                            <td> <button class="btn btn-medium btn-primary" style="margin-left:48%;width:90px;height: 35px;font-size: 13px;" id="btnPost">Envoyer</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div id="Articles_List">
+                                    <div class="shadow p-3 mb-5 bg-white rounded">
+                                        <div class="card-header">
+                                            <a href=""><b>Valentin CORSAIN</b></a>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>This is some text within a card</p>
+                                            <img src="images/member-3.png" class="card-img-top" alt="" style="max-width: 300px;">
+                                            <br><br><span style="color:grey;"><i class="fa fa-thumbs-up"> </i> J'aime <span>(46)</span></span> <span style="color:grey;margin-left:20px;"> <i class="fa fa-thumbs-down"></i> Je n'aime pas <span>(10)</span></span>
+                                            <span style="color:grey;margin-left:30px;"><i class="fa fa-share-alt"></i> Partager</span>
+                                            <span style="color:grey;margin-left:38%;"><i class="fa fa-calendar"></i> Le 2019-06-28</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="uou-sidebar">
+                                    <div class="search-widget">
+                                        <form class="search-form-widget" action="#">
+                                            <input type="text" class="search-input" placeholder="Rechercher ...">
+                                            <input type="submit" value="">
+                                        </form>
+                                    </div>
+                                    <!-- end search-widget -->
+
+                                    <h5 class="sidebar-title">Categories</h5>
+                                    <div class="list-widget">
+                                        <ul>
+                                            <li><a href="#">L'école</a></li>
+                                            <li><a href="#">BDE</a></li>
+                                            <li><a href="#">Culture</a></li>
+                                            <li><a href="#">Mulitmedia</a></li>
+                                            <li><a href="#">Média</a></li>
+                                        </ul>
+                                    </div>
+                                    <h5 class="sidebar-title">Suivez-nous !</h5>
+                                    <div class="social-widget">
+                                        <div class="uou-block-4b">
+                                            <ul class="social-icons">
+                                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <!-- end .uou-block-4b -->
+                                    </div>
+
+                                    <!-- end social widget -->
+                                </div>
+                                <!-- end uou-sidebar -->
+                            </div>
+
+
+                        </div>
+                        <!-- end row -->
+
+                    </div>
+                    <!-- edn cotainer -->
+
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="uou-block-4e">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6">
+                            <a href="#" class="logo"><img src="images/logo.png" alt=""></a>
+                            <ul class="contact-info has-bg-image contain" data-bg-image="images/footer-map-bg.png">
+                                <li> <i class="fa fa-map-marker"></i>
+                                    <address>
                 Cours Albert Thomas, Lyon FRANCE
                 </address>
-              </li>
-              <li> <i class="fa fa-phone"></i> <a href="tel:#">(+33) 4 56 78 42 23</a> </li>
-              <li> <i class="fa fa-envelope"></i> <a href="mailto:#">support@duckonu.com</a> </li>
-        </ul>
-      </div>
-      <div class="col-md-4 col-sm-6">
-          <h5>Fil Twitter</h5>
-          <ul class="twitter-feed">
-            <li> RT <a href="#">@no1son</a> <br> <a href="#">http://t.co/TSfMW1qMAW</a> Impressionnant ! <a href="#">@AIRNAUTS</a> <a href="#" class="time">22 Mai 2019</a> </li>
-            <li> Nouvelle version du site ! - <a href="#">http://t.co/sBlU3GbapT</a> <a href="#" class="time">22 Mai 2019</a> </li>
-          </ul>
-      </div>
-      <div class="col-md-4 col-sm-6">
-          <h5>SUIVEZ-NOUS !</h5>
-          <p>Soyez informé en temps réel des nouveautés, actualités et sorties sur Duck On-U.</p>
-          <form class="newsletter-form" action="#">
-            <input type="email" placeholder="Votre adresse mail">
-            <input type="submit" class="btn btn-primary" value="M'inscrire">
-          </form>
-        </div>
-    </div>
-  </div>
-</div>
-<!-- end .uou-block-4e -->
+                                </li>
+                                <li> <i class="fa fa-phone"></i> <a href="tel:#">(+33) 4 56 78 42 23</a> </li>
+                                <li> <i class="fa fa-envelope"></i> <a href="mailto:#">support@duckonu.com</a> </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <h5>Fil Twitter</h5>
+                            <ul class="twitter-feed">
+                                <li> RT <a href="#">@no1son</a> <br> <a href="#">http://t.co/TSfMW1qMAW</a> Impressionnant ! <a href="#">@AIRNAUTS</a> <a href="#" class="time">22 Mai 2019</a> </li>
+                                <li> Nouvelle version du site ! - <a href="#">http://t.co/sBlU3GbapT</a> <a href="#" class="time">22 Mai 2019</a> </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <h5>SUIVEZ-NOUS !</h5>
+                            <p>Soyez informé en temps réel des nouveautés, actualités et sorties sur Duck On-U.</p>
+                            <form class="newsletter-form" action="#">
+                                <input type="email" placeholder="Votre adresse mail">
+                                <input type="submit" class="btn btn-primary" value="M'inscrire">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end .uou-block-4e -->
 
 
-<div class="uou-block-4a secondary dark">
-    <div class="container">
-      <ul class="links">
-        <li><a href="#">Mentions légales</a></li>
-        <li><a href="#">Termes & conditions</a></li>
-      </ul>
-      <p>Copyright &copy; 2019 <a href="#">DUCK ON-U</a>. Tous droits réservés.</p>
-    </div>
-  </div>
-  <!-- end .uou-block-4a -->
+            <div class="uou-block-4a secondary dark">
+                <div class="container">
+                    <ul class="links">
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">Termes & conditions</a></li>
+                    </ul>
+                    <p>Copyright &copy; 2019 <a href="#">DUCK ON-U</a>. Tous droits réservés.</p>
+                </div>
+            </div>
+            <!-- end .uou-block-4a -->
 
-<div class="uou-block-11a">
-  <h5 class="title">Menu</h5>
-  <a href="#" class="mobile-sidebar-close">&times;</a>
-  <nav class="main-nav">
-    <ul>
-      <li><a href="index.html">Index</a></li>
-      <li><a href="listing-filter.html">Professionals</a> </li>
-      <li><a href="profile_company.html">Profile Company</a></li>
-      <li><a href="profile_company-no-tabs.html">Profile Company No Tabs</a></li>
-      <li><a href="user-dashboard(connections)(hotkeys-disabled).html">User Dashboard 1</a></li>
-      <li><a href="user-dashboard(connections)(hotkeys-enabled).html">User Dashboard 2</a></li>
-      <li><a href="user-dashboard(followers).html">User Dashboard 3</a></li>
-      <li><a href="user-dashboard(following).html">User Dashboard 4</a></li>
-      <li><a href="blog-post.html">Blog Post</a></li>
-      <li><a href="user-profile(layout-1).html">User Profile</a></li>
-      <li class="active"><a href="blog.html">Blog</a></li>
-      <li><a href="gui-kit.html">GUI KIT</a></li>
-    </ul>
-  </nav>
-  <hr>
-</div>
+            <div class="uou-block-11a">
+                <h5 class="title">Menu</h5>
+                <a href="#" class="mobile-sidebar-close">&times;</a>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Index</a></li>
+                        <li><a href="listing-filter.html">Professionals</a> </li>
+                        <li><a href="profile_company.html">Profile Company</a></li>
+                        <li><a href="profile_company-no-tabs.html">Profile Company No Tabs</a></li>
+                        <li><a href="user-dashboard(connections)(hotkeys-disabled).html">User Dashboard 1</a></li>
+                        <li><a href="user-dashboard(connections)(hotkeys-enabled).html">User Dashboard 2</a></li>
+                        <li><a href="user-dashboard(followers).html">User Dashboard 3</a></li>
+                        <li><a href="user-dashboard(following).html">User Dashboard 4</a></li>
+                        <li><a href="blog-post.html">Blog Post</a></li>
+                        <li><a href="user-profile(layout-1).html">User Profile</a></li>
+                        <li class="active"><a href="blog.html">Blog</a></li>
+                        <li><a href="gui-kit.html">GUI KIT</a></li>
+                    </ul>
+                </nav>
+                <hr>
+            </div>
 
-<!-- Scripts --> 
-<script src="https://maps.googleapis.com/maps/api/js"></script> 
-  <script src="js/bootstrap.js"></script> 
-<script src="js/plugins/superfish.min.js"></script> 
-<script src="js/jquery.ui.min.js"></script> 
-<script src="js/plugins/rangeslider.min.js"></script> 
-<script src="js/plugins/jquery.flexslider-min.js"></script> 
-<script src="js/uou-accordions.js"></script> 
-<script src="js/uou-tabs.js"></script> 
-<script src="js/plugins/select2.min.js"></script> 
-<script src="js/owl.carousel.min.js"></script> 
-<script src="js/gmap3.min.js"></script> 
-<script src="js/scripts.js"></script>
-</body>
+            <!-- Scripts -->
+            <script src="https://maps.googleapis.com/maps/api/js"></script>
+            <script src="js/bootstrap.js"></script>
+            <script src="js/plugins/superfish.min.js"></script>
+            <script src="js/jquery.ui.min.js"></script>
+            <script src="js/plugins/rangeslider.min.js"></script>
+            <script src="js/plugins/jquery.flexslider-min.js"></script>
+            <script src="js/uou-accordions.js"></script>
+            <script src="js/uou-tabs.js"></script>
+            <script src="js/plugins/select2.min.js"></script>
+            <script src="js/owl.carousel.min.js"></script>
+            <script src="js/gmap3.min.js"></script>
+            <script src="js/scripts.js"></script>
+        </body>
+
 </html>

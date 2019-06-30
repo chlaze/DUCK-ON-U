@@ -181,7 +181,7 @@
         var id_user = sessionStorage.getItem("id_user");
   
         var str = "";
-        str = str + '<div class="col-sm-3"><div class="uou-block-6a"><h6 style="font-size:30px;color:#0099ff;">' + nomEntr + '<br><br><span>' + nomContrat +  ' | ' + nomPoste + '</span></h6><span>A Pourvoir le : ' + datePoste + '</span><p><i class="fa fa-map-marker"></i>Lyon, France</p></div></div>';
+        str = str + '<div class="col-sm-3"><div class="uou-block-6a"><h6 style="font-size:30px;color:#0099ff;"><a href="profile_company-no-tabs.html?id=' + id_user + '">' + nomEntr + '</a><br><br><span>' + nomContrat +  ' | ' + nomPoste + '</span></h6><span>A Pourvoir le : ' + datePoste + '</span><p><i class="fa fa-map-marker"></i>Lyon, France</p></div></div>';
         $('#cands').append(str);
 
 
@@ -220,7 +220,7 @@
             var id_entr = Data.offre[i].id_user;
 
             var str = "";
-            str = str + '<div class="col-sm-3"><div class="uou-block-6a"><H6 style="font-size:30px;color:#0099ff;">' + nom + '<br><br><span>' + type +  ' | ' + poste + '</span></h6><span>A Pourvoir le : ' + date_ + '</span><p><i class="fa fa-map-marker"></i>Lyon, France</p></div></div>';
+            str = str + '<div class="col-sm-3"><div class="uou-block-6a"><H6 style="font-size:30px;color:#0099ff;"><a href="profile_company-no-tabs.html?id=' + id_entr + '">' + nom + '</a><br><br><span>' + type +  ' | ' + poste + '</span></h6><span>A Pourvoir le : ' + date_ + '</span><p><i class="fa fa-map-marker"></i>Lyon, France</p></div></div>';
             $('#cands').append(str);
 
           }

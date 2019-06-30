@@ -189,7 +189,7 @@
         var nom = sessionStorage.getItem("Nom");
   
         var str = "";
-        str = str + '<div class="col-sm-3"><div class="uou-block-6a"> <img src="images/member-1.png" alt=""><h6>' + prenom + ' ' + nom + '<span>' + nomContrat + ' | ' + nomPoste + '</span></h6><p><i class="fa fa-map-marker"></i> Lyon, France</p></div></div>';
+        str = str + '<div class="col-sm-3"><div class="uou-block-6a"> <img src="images/member-1.png" alt=""><h6><a href="user-profile(layout-2).html?id=' + id_user + '" style="color:black;">' + prenom + ' ' + nom + '</a><span>' + nomContrat + ' | ' + nomPoste + '</span></h6><p><i class="fa fa-map-marker"></i> Lyon, France</p></div></div>';
         $('#cands').append(str);
 
 
@@ -228,7 +228,7 @@
             var id_user = Data.demandes[i].id_user;
 
             var str = "";
-            str = str + '<div class="col-sm-3"><div class="uou-block-6a"> <img src="images/member-1.png" alt=""><h6>' + prenom + ' ' + nom + '<span>' + type + ' | ' + nom_poste + '</span></h6><p><i class="fa fa-map-marker"></i> Lyon, France</p></div></div>';
+            str = str + '<div class="col-sm-3"><div class="uou-block-6a"> <img src="images/member-1.png" alt=""><h6><a href="user-profile(layout-2).html?id=' + id_user + '" style="color:black;">' + prenom + ' ' + nom + '</a><span>' + type + ' | ' + nom_poste + '</span></h6><p><i class="fa fa-map-marker"></i> Lyon, France</p></div></div>';
             $('#cands').append(str);
 
           }
