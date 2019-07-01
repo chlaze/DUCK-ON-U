@@ -17,7 +17,7 @@ $mdphash = md5($salt);
 $reponse = $bdd->query('SELECT id_user FROM user WHERE mail = "'.$mail.'" AND mdphash="'.$mdphash.'" ');
   if ($donnees = $reponse->fetch()){
   
-    $sql = 'SELECT id_user FROM user WHERE mail = "'.$mail.'" AND mdphash="'.$mdphash.'" ';
+    $sql = 'SELECT id_user, name, firstname FROM user WHERE mail = "'.$mail.'" AND mdphash="'.$mdphash.'" ';
     $stmt = $bdd->prepare($sql);
     $stmt->execute();
 

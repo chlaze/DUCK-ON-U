@@ -1,116 +1,121 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>TIGER - Social Network HTML Template</title>
+    <title>TIGER - Social Network HTML Template</title>
 
-<!-- Fonts Online -->
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-
-
-<!-- Style Sheet -->
-<link rel="stylesheet" href="css/owl.carousel.css">
-<link rel="stylesheet" href="css/main-style.css">
-<link rel="stylesheet" href="css/style.css">
-
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script>
-  function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-        vars[key] = value;
-    });
-    return vars;
-  }
-// var id = sessionStorage.getItem('id_user');
-var id = getUrlVars();
-id = id.id;
-console.log(id);
-var url_ = "../dist/php/info_user.php?id_user=" + id;
-
-    jQuery.ajax({
-    url: url_,
-    dataType: "json",
-    success: function(Data){
-      console.log(Data);
-      var name = Data.info_user[0].name;
-      var prenom = Data.info_user[0].firstname;
-      var birth = Data.info_user[0].birth;
-      var adresse = Data.info_user[0].adresse;
-      var mail = Data.info_user[0].mail;
-      var tel = Data.info_user[0].phone;
-      var link = Data.info_user[0].link;
-      var date_insc = Data.info_user[0].date_inscription;
-
-      $('#birth').append(birth);
-      $('#adresse').append(adresse);
-      $('#tel').append(tel);
-      $('#mail').append(mail);
-
-      $('.name').append(prenom + ' ' + name);
-
-      if(Data.profil.length > 0){
-        var job = Data.profil[0].emploi;
-        var bio = Data.profil[0].bio;
-        var link = Data.profil[0].link;
-
-        $('#job').append(job);
-        $('#bio').append(bio);
-        $('#link').append(link);
+    <!-- Fonts Online -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
 
-      }else {
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/main-style.css">
+    <link rel="stylesheet" href="css/style.css">
 
-      }
-      for(i = 0; i < Data.skills.length; i++){
-        var name_skill = Data.skills[i].name_skills;
-        var pourcent_skill = Data.skills[i].pourcent;
-        
-        var str = "";
-        str = str + '<ul class="row"><li class="col-sm-3"><h6><i class="fa fa-plus"></i> ' + name_skill + '</h6></li><li class="col-sm-9"><div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="' + pourcent_skill + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + pourcent_skill + '%;"> </div></div></li></ul>';
-        $('#jobs_skills').append(str);
-      }
-      if(Data.exp.length > 0){
-        for(i = 0; i < Data.exp.length; i++){
-          var entrep = Data.exp[i].entreprise;
-          var poste = Data.exp[i].nom;
-          var date_deb = Data.exp[i].date_deb;
-          var date_fin = Data.exp[i].date_fin;
-
-          var strr = "";
-          strr = strr + "<p><b>" + poste + "</b> à <b>" + entrep + "</b> - du <span>" + date_deb + "</span> au <span>" + date_fin + "</span></p>";
-          $('#exppro').append(strr);
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+                vars[key] = value;
+            });
+            return vars;
         }
+        // var id = sessionStorage.getItem('id_user');
+        var id = getUrlVars();
+        id = id.id;
+        console.log(id);
+        var url_ = "../dist/php/info_user.php?id_user=" + id;
+
+        jQuery.ajax({
+            url: url_,
+            dataType: "json",
+            success: function(Data) {
+                console.log(Data);
+                var name = Data.info_user[0].name;
+                var prenom = Data.info_user[0].firstname;
+                var birth = Data.info_user[0].birth;
+                var adresse = Data.info_user[0].adresse;
+                var mail = Data.info_user[0].mail;
+                var tel = Data.info_user[0].phone;
+                var link = Data.info_user[0].link;
+                var img = Data.info_user[0].img;
+                if (img == "") {
+                    img = "images/avatar-1.jpg";
+                }
+                var date_insc = Data.info_user[0].date_inscription;
+
+                $('#birth').append(birth);
+                $('#ImgPro').attr("src", img);
+                $('#adresse').append(adresse);
+                $('#tel').append(tel);
+                $('#mail').append(mail);
+
+                $('.name').append(prenom + ' ' + name);
+
+                if (Data.profil.length > 0) {
+                    var job = Data.profil[0].emploi;
+                    var bio = Data.profil[0].bio;
+                    var link = Data.profil[0].link;
+
+                    $('#job').append(job);
+                    $('#bio').append(bio);
+                    $('#link').append(link);
 
 
-      }
+                } else {
 
-    },
-    error: function() {
-        console.warn("Erreur");
-    },
-    });
+                }
+                for (i = 0; i < Data.skills.length; i++) {
+                    var name_skill = Data.skills[i].name_skills;
+                    var pourcent_skill = Data.skills[i].pourcent;
+
+                    var str = "";
+                    str = str + '<ul class="row"><li class="col-sm-3"><h6><i class="fa fa-plus"></i> ' + name_skill + '</h6></li><li class="col-sm-9"><div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="' + pourcent_skill + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + pourcent_skill + '%;"> </div></div></li></ul>';
+                    $('#jobs_skills').append(str);
+                }
+                if (Data.exp.length > 0) {
+                    for (i = 0; i < Data.exp.length; i++) {
+                        var entrep = Data.exp[i].entreprise;
+                        var poste = Data.exp[i].nom;
+                        var date_deb = Data.exp[i].date_deb;
+                        var date_fin = Data.exp[i].date_fin;
+
+                        var strr = "";
+                        strr = strr + "<p><b>" + poste + "</b> à <b>" + entrep + "</b> - du <span>" + date_deb + "</span> au <span>" + date_fin + "</span></p>";
+                        $('#exppro').append(strr);
+                    }
 
 
-</script>
+                }
+
+            },
+            error: function() {
+                console.warn("Erreur");
+            },
+        });
+    </script>
 </head>
 
 <body>
-<div id="main-wrapper"> 
-  
-  
-  <div class="box-shadow-for-ui">
-    <div class="uou-block-2b">
-      <div class="container"> <a href="#" class="logo"><img src="images/logo.png" alt=""></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
-        <nav class="nav">
-          <ul class="sf-menu">
-              <li><a href="blog.html"><i class="fa  fa-home"></i></a></li>
-              <li> <a href="listing-filter.html">Offre</a> </li>
-              <!---            <li> <a href="index.html">Pages</a>
+    <div id="main-wrapper">
+
+
+        <div class="box-shadow-for-ui">
+            <div class="uou-block-2b">
+                <div class="container">
+                    <a href="#" class="logo"><img src="images/logo.png" alt=""></a> <a href="#" class="mobile-sidebar-button mobile-sidebar-toggle"><span></span></a>
+                    <nav class="nav">
+                        <ul class="sf-menu">
+                            <li><a href="blog.html"><i class="fa  fa-home"></i></a></li>
+                            <li> <a href="listing-filter.html">Offre</a> </li>
+                            <!---            <li> <a href="index.html">Pages</a>
                           <ul>
                          <li><a href="profile_company.html">Profile Company</a></li>
                           <li><a href="profile_company-no-tabs.html">Entreprise</a></li>
@@ -121,245 +126,247 @@ var url_ = "../dist/php/info_user.php?id_user=" + id;
                             <li><a href="blog-post.html">Blog Post</a></li>           
                           </ul>
                         </li>
-                            -->  
-                        <li> <a href="user-profile(layout-1).html">Profil</a></li>
-                        <li class="active"><a href="blog.html">Actualités</a></li>
-                        <li><a href="chat.html"><i class="fa fa-comments"></i></a></li>
-                      </ul>
-          </nav>
-        </div>
-      </div>
-    <!-- end .uou-block-2b --> 
-  </div>
-  <!-- end .uou-block-2b -->
-  
-  <div class="compny-profile"> 
-    <!-- SUB Banner -->
-    <div class="profile-bnr user-profile-bnr">
-      <div class="container">
-        <div class="pull-left">
-          <h2 class="name"></h2>
-          <h5 id="job"></h5>
-        </div>
-        
-        <!-- Top Riht Button -->
-        <div class="right-top-bnr">
-          <div class="connect"> <a href="#." data-toggle="modal" data-target="#myModal"><i class="fa fa-user-plus"></i> AJOUTER</a> <a href="#."><i class="fa fa-share-alt"></i> Partager</a>
-            <div class="bt-ns"> <a href="#."><i class="fa fa-bookmark-o"></i> </a> <a href="#."><i class="fa fa-envelope-o"></i> </a> <a href="#."><i class="fa fa-exclamation"></i> </a> </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Modal POPUP -->
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="container">
-              <h6><a class="close" href="#." data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a> Send Message</h6>
-              
-              <!-- Forms -->
-              <form action="#">
-                <ul class="row">
-                  <li class="col-xs-6">
-                    <input type="text" placeholder="First Name ">
-                  </li>
-                  <li class="col-xs-6">
-                    <input type="text" placeholder="Last Name">
-                  </li>
-                  <li class="col-xs-6">
-                    <input type="text" placeholder="Country">
-                  </li>
-                  <li class="col-xs-6">
-                    <input type="text" placeholder="Email">
-                  </li>
-                  <li class="col-xs-12">
-                    <textarea placeholder="Your Message"></textarea>
-                  </li>
-                  <li class="col-xs-12">
-                    <button class="btn btn-primary">Send message</button>
-                  </li>
-                </ul>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Profile Company Content -->
-    <div class="profile-company-content user-profile main-user" data-bg-color="f5f5f5">
-      <div class="container">
-        <div class="row"> 
-          
-          <!-- Tab Content -->
-          <div class="col-md-12">
-            <div class="tab-content"> 
-              
-              <!-- PROFILE -->
-              <div id="profile" class="tab-pane fade in active">
-                <div class="row"> 
-                  
-                  <!-- Col -->
-                  <div class="col-md-4"> 
-                    
-                    <!-- Professional Details -->
-                    <div class="sidebar">
-                      <h5 class="main-title">Détails professionnels</h5>
-                      <div class="img-profile"> <img class="media-object" src="images/avatar-1.jpg" alt=""> </div>
-                      <div class="sidebar-information">
-                        <ul class="single-category">
-                          <li class="row">
-                            <h6 class="title col-xs-6">Nom</h6>
-                            <span class="subtitle col-xs-6 name"></span></li>
-                          <li class="row">
-                            <h6 class="title col-xs-6">Né(e) le</h6>
-                            <span class="subtitle col-xs-6" id="birth"></span></li>
-                          <li class="row">
-                            <h6 class="title col-xs-6">Adresse</h6>
-                            <span class="subtitle col-xs-6" id="adresse"></span></li>
-                          <li class="row">
-                            <h6 class="title col-xs-6">Téléphone</h6>
-                            <span class="subtitle col-xs-6" id="tel"></span></li>
-                          <li class="row">
-                            <h6 class="title col-xs-6">E-mail</h6>
-                            <span class="subtitle col-xs-6" id="mail"><a href="#."></a></span></li>
-                          <li class="row">
-                            <h6 class="title col-xs-6">Lien / LinkedIn</h6>
-                            <span class="subtitle col-xs-6" id="link"><a href="#."></a></span></li>
+                            -->
+                            <li> <a href="user-profile(layout-1).html">Profil</a></li>
+                            <li class="active"><a href="blog.html">Actualités</a></li>
+                            <li><a href="chat.html"><i class="fa fa-comments"></i></a></li>
                         </ul>
-                      </div>
-                    </div>
-                    
-                    
-                    <!-- Social Profiles -->
-                    <div class="sidebar">
-                      <h5 class="main-title">Réseaux sociaux</h5>
-                      <ul class="socil">
-                        <li><a href="#."><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#."><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#."><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#."><i class="fa fa-twitter"></i></a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="col-md-8"> 
-                    <!-- Skills -->
-                    <div class="sidebar">
-                      <h5 class="main-title">A Propos</h5>
-                      <p id="bio"></p>
-                      <h5 class="main-title">Expéricences professionnelles</h5>
-                      <div id="exppro"></div>
-                      <h5 class="main-title">Maitrises</h5>
-                      <div class="job-skills" id="jobs_skills"> 
-                        
-                        
-                                                
-                        
-                      </div>
-                    </div>
-                    
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    </nav>
                 </div>
-              </div>
             </div>
-          </div>
+            <!-- end .uou-block-2b -->
         </div>
-      </div>
-    </div>
-  </div>
-</div>
+        <!-- end .uou-block-2b -->
 
-<!-- Footer -->
-<div class="uou-block-4e">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4 col-sm-6"> <a href="#" class="logo"><img src="images/logo.png" alt=""></a>
-        <ul class="contact-info has-bg-image contain" data-bg-image="images/footer-map-bg.png">
-          <li> <i class="fa fa-map-marker"></i>
-            <address>
+        <div class="compny-profile">
+            <!-- SUB Banner -->
+            <div class="profile-bnr user-profile-bnr">
+                <div class="container">
+                    <div class="pull-left">
+                        <h2 class="name"></h2>
+                        <h5 id="job"></h5>
+                    </div>
+
+                    <!-- Top Riht Button -->
+                    <div class="right-top-bnr">
+                        <div class="connect"> <a href="#." data-toggle="modal" data-target="#myModal"><i class="fa fa-user-plus"></i> AJOUTER</a> <a href="#."><i class="fa fa-share-alt"></i> Partager</a>
+                            <div class="bt-ns"> <a href="#."><i class="fa fa-bookmark-o"></i> </a> <a href="#."><i class="fa fa-envelope-o"></i> </a> <a href="#."><i class="fa fa-exclamation"></i> </a> </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal POPUP -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="container">
+                                <h6><a class="close" href="#." data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a> Send Message</h6>
+
+                                <!-- Forms -->
+                                <form action="#">
+                                    <ul class="row">
+                                        <li class="col-xs-6">
+                                            <input type="text" placeholder="First Name ">
+                                        </li>
+                                        <li class="col-xs-6">
+                                            <input type="text" placeholder="Last Name">
+                                        </li>
+                                        <li class="col-xs-6">
+                                            <input type="text" placeholder="Country">
+                                        </li>
+                                        <li class="col-xs-6">
+                                            <input type="text" placeholder="Email">
+                                        </li>
+                                        <li class="col-xs-12">
+                                            <textarea placeholder="Your Message"></textarea>
+                                        </li>
+                                        <li class="col-xs-12">
+                                            <button class="btn btn-primary">Send message</button>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Company Content -->
+            <div class="profile-company-content user-profile main-user" data-bg-color="f5f5f5">
+                <div class="container">
+                    <div class="row">
+
+                        <!-- Tab Content -->
+                        <div class="col-md-12">
+                            <div class="tab-content">
+
+                                <!-- PROFILE -->
+                                <div id="profile" class="tab-pane fade in active">
+                                    <div class="row">
+
+                                        <!-- Col -->
+                                        <div class="col-md-4">
+
+                                            <!-- Professional Details -->
+                                            <div class="sidebar">
+                                                <h5 class="main-title">Détails professionnels</h5>
+                                                <div class="img-profile"> <img class="media-object" id="ImgPro" src="images/avatar-1.jpg" alt=""> </div>
+                                                <div class="sidebar-information">
+                                                    <ul class="single-category">
+                                                        <li class="row">
+                                                            <h6 class="title col-xs-6">Nom</h6>
+                                                            <span class="subtitle col-xs-6 name"></span></li>
+                                                        <li class="row">
+                                                            <h6 class="title col-xs-6">Né(e) le</h6>
+                                                            <span class="subtitle col-xs-6" id="birth"></span></li>
+                                                        <li class="row">
+                                                            <h6 class="title col-xs-6">Adresse</h6>
+                                                            <span class="subtitle col-xs-6" id="adresse"></span></li>
+                                                        <li class="row">
+                                                            <h6 class="title col-xs-6">Téléphone</h6>
+                                                            <span class="subtitle col-xs-6" id="tel"></span></li>
+                                                        <li class="row">
+                                                            <h6 class="title col-xs-6">E-mail</h6>
+                                                            <span class="subtitle col-xs-6" id="mail"><a href="#."></a></span></li>
+                                                        <li class="row">
+                                                            <h6 class="title col-xs-6">Lien / LinkedIn</h6>
+                                                            <span class="subtitle col-xs-6" id="link"><a href="#."></a></span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+
+                                            <!-- Social Profiles -->
+                                            <div class="sidebar">
+                                                <h5 class="main-title">Réseaux sociaux</h5>
+                                                <ul class="socil">
+                                                    <li><a href="#."><i class="fa fa-facebook"></i></a></li>
+                                                    <li><a href="#."><i class="fa fa-google-plus"></i></a></li>
+                                                    <li><a href="#."><i class="fa fa-linkedin"></i></a></li>
+                                                    <li><a href="#."><i class="fa fa-twitter"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <!-- Skills -->
+                                            <div class="sidebar">
+                                                <h5 class="main-title">A Propos</h5>
+                                                <p id="bio"></p>
+                                                <h5 class="main-title">Expéricences professionnelles</h5>
+                                                <div id="exppro"></div>
+                                                <h5 class="main-title">Maitrises</h5>
+                                                <div class="job-skills" id="jobs_skills">
+
+
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="uou-block-4e">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <a href="#" class="logo"><img src="images/logo.png" alt=""></a>
+                    <ul class="contact-info has-bg-image contain" data-bg-image="images/footer-map-bg.png">
+                        <li> <i class="fa fa-map-marker"></i>
+                            <address>
             Cours Albert Thomas, Lyon FRANCE
             </address>
-          </li>
-          <li> <i class="fa fa-phone"></i> <a href="tel:#">(+33) 4 56 78 42 23</a> </li>
-          <li> <i class="fa fa-envelope"></i> <a href="mailto:#">support@duckonu.com</a> </li>
-        </ul>
-      </div>
-      <div class="col-md-4 col-sm-6">
-        <h5>Fil Twitter</h5>
-        <ul class="twitter-feed">
-          <li> RT <a href="#">@no1son</a> <br> <a href="#">http://t.co/TSfMW1qMAW</a> Impressionnant ! <a href="#">@AIRNAUTS</a> <a href="#" class="time">22 Mai 2019</a> </li>
-          <li> Nouvelle version du site ! - <a href="#">http://t.co/sBlU3GbapT</a> <a href="#" class="time">22 Mai 2019</a> </li>
-        </ul>
-      </div>
-      
-      <div class="col-md-4 col-sm-6">
-        <h5>SUIVEZ-NOUS !</h5>
-        <p>Soyez informé en temps réel des nouveautés, actualités et sorties sur Duck On-U.</p>
-        <form class="newsletter-form" action="#">
-          <input type="email" placeholder="Votre adresse mail">
-          <input type="submit" class="btn btn-primary" value="M'inscrire">
-        </form>
-      </div>
+                        </li>
+                        <li> <i class="fa fa-phone"></i> <a href="tel:#">(+33) 4 56 78 42 23</a> </li>
+                        <li> <i class="fa fa-envelope"></i> <a href="mailto:#">support@duckonu.com</a> </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <h5>Fil Twitter</h5>
+                    <ul class="twitter-feed">
+                        <li> RT <a href="#">@no1son</a> <br> <a href="#">http://t.co/TSfMW1qMAW</a> Impressionnant ! <a href="#">@AIRNAUTS</a> <a href="#" class="time">22 Mai 2019</a> </li>
+                        <li> Nouvelle version du site ! - <a href="#">http://t.co/sBlU3GbapT</a> <a href="#" class="time">22 Mai 2019</a> </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 col-sm-6">
+                    <h5>SUIVEZ-NOUS !</h5>
+                    <p>Soyez informé en temps réel des nouveautés, actualités et sorties sur Duck On-U.</p>
+                    <form class="newsletter-form" action="#">
+                        <input type="email" placeholder="Votre adresse mail">
+                        <input type="submit" class="btn btn-primary" value="M'inscrire">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-<!-- end .uou-block-4e -->
+    <!-- end .uou-block-4e -->
 
-<div class="uou-block-4a secondary dark">
-  <div class="container">
-    <ul class="links">
-      <li><a href="#">Mentions légales</a></li>
-      <li><a href="#">Termes & conditions</a></li>
-    </ul>
-    <p>Copyright &copy; 2019 <a href="#">DUCK ON-U</a>. Tous droits réservés.</p>
-  </div>
-</div>
-<!-- end .uou-block-4a -->
+    <div class="uou-block-4a secondary dark">
+        <div class="container">
+            <ul class="links">
+                <li><a href="#">Mentions légales</a></li>
+                <li><a href="#">Termes & conditions</a></li>
+            </ul>
+            <p>Copyright &copy; 2019 <a href="#">DUCK ON-U</a>. Tous droits réservés.</p>
+        </div>
+    </div>
+    <!-- end .uou-block-4a -->
 
-<div class="uou-block-11a">
-  <h5 class="title">Menu</h5>
-  <a href="#" class="mobile-sidebar-close">&times;</a>
-  <nav class="main-nav">
-    <ul>
-      <li ><a href="index.html">Index</a></li>
-      <li><a href="listing-filter.html">Professionals</a> </li>
-      <li><a href="index.html">Pages</a>
-      <li><a href="profile_company.html">Profile Company</a></li>
-      <li><a href="profile_company-no-tabs.html">Profile Company No Tabs</a></li>
-      <li><a href="user-dashboard(connections)(hotkeys-disabled).html">User Dashboard 1</a></li>
-      <li><a href="user-dashboard(connections)(hotkeys-enabled).html">User Dashboard 2</a></li>
-      <li><a href="user-dashboard(followers).html">User Dashboard 3</a></li>
-      <li><a href="user-dashboard(following).html">User Dashboard 4</a></li>
-      <li><a href="blog-post.html">Blog Post</a></li>
-      <li class="active"> <a href="user-profile(layout-1).html">User Profile</a></li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="gui-kit.html">GUI KIT</a></li>
-    </ul>
-  </nav>
-  <hr>
-</div>
+    <div class="uou-block-11a">
+        <h5 class="title">Menu</h5>
+        <a href="#" class="mobile-sidebar-close">&times;</a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Index</a></li>
+                <li><a href="listing-filter.html">Professionals</a> </li>
+                <li><a href="index.html">Pages</a>
+                    <li><a href="profile_company.html">Profile Company</a></li>
+                    <li><a href="profile_company-no-tabs.html">Profile Company No Tabs</a></li>
+                    <li><a href="user-dashboard(connections)(hotkeys-disabled).html">User Dashboard 1</a></li>
+                    <li><a href="user-dashboard(connections)(hotkeys-enabled).html">User Dashboard 2</a></li>
+                    <li><a href="user-dashboard(followers).html">User Dashboard 3</a></li>
+                    <li><a href="user-dashboard(following).html">User Dashboard 4</a></li>
+                    <li><a href="blog-post.html">Blog Post</a></li>
+                    <li class="active"> <a href="user-profile(layout-1).html">User Profile</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="gui-kit.html">GUI KIT</a></li>
+            </ul>
+        </nav>
+        <hr>
+    </div>
 
-<!-- Scripts --> 
-<script src="https://maps.googleapis.com/maps/api/js"></script> 
-<script src="js/jquery-2.1.3.min.js"></script> 
-<script src="js/bootstrap.js"></script> 
-<script src="js/plugins/superfish.min.js"></script> 
-<script src="js/jquery.ui.min.js"></script> 
-<script src="js/plugins/rangeslider.min.js"></script> 
-<script src="js/plugins/jquery.flexslider-min.js"></script> 
-<script src="js/uou-accordions.js"></script> 
-<script src="js/uou-tabs.js"></script> 
-<script src="js/plugins/select2.min.js"></script> 
-<script src="js/owl.carousel.min.js"></script> 
-<script src="js/gmap3.min.js"></script> 
-<script src="js/scripts.js"></script> 
-<script>
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
-</script>
+    <!-- Scripts -->
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/plugins/superfish.min.js"></script>
+    <script src="js/jquery.ui.min.js"></script>
+    <script src="js/plugins/rangeslider.min.js"></script>
+    <script src="js/plugins/jquery.flexslider-min.js"></script>
+    <script src="js/uou-accordions.js"></script>
+    <script src="js/uou-tabs.js"></script>
+    <script src="js/plugins/select2.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/gmap3.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script>
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 </body>
+
 </html>
